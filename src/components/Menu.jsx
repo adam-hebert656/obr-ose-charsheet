@@ -1,22 +1,20 @@
 import * as React from 'react';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemText from '@mui/material/ListItemText';
+import { Button, Divider, ListItemIcon, ListItemText } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import Menu from '@mui/material/Menu';
 import { CharacterContext } from '../contexts/CharactersContext';
 
 export default function SimpleListMenu() {
-    const {charactersContext, selectedCharacterIndexContext, selectedCharacterContext} = React.useContext(CharacterContext)
+    const { charactersContext, selectedCharacterIndexContext, selectedCharacterContext } = React.useContext(CharacterContext)
     const [characters, setCharacters] = charactersContext;
     const [selectedCharacterIndex, setSelectedCharacterIndex] = selectedCharacterIndexContext;
-    const [selectedCharacter, setSelectedCharacter] = selectedCharacterContext;
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
     const options = characters.map(char => char.name)
 
-    const handleClickListItem = (event) => {
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -29,38 +27,43 @@ export default function SimpleListMenu() {
         setAnchorEl(null);
     };
 
+    const handleNewCharacter = () => {
+        console.log('New Character')
+        handleClose()
+    }
+
     return (
         <div>
-            <List
-                component="nav"
-                aria-label="Device settings"
-                sx={{ paddingY: 0, }}
+            <Button
+                id="basic-button"
+                aria-controls={open ? 'basic-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={open ? 'true' : undefined}
+                onClick={handleClick}
+                sx={{ color: 'white' }}
             >
-                <ListItemButton
-                    id="lock-button"
-                    aria-haspopup="listbox"
-                    aria-controls="lock-menu"
-                    aria-label="when device is locked"
-                    aria-expanded={open ? 'true' : undefined}
-                    onClick={handleClickListItem}
-                    sx={{ paddingY: 0, }}
-                    alignItems='center'
-                >
-                    <ListItemText
-                        primary={options[selectedCharacterIndex]}
-                        secondary="Change Character"
-                        sx={{ textAlign: 'center', }}
-                    />
-                </ListItemButton>
-            </List>
+                Change Character
+            </Button>
             <Menu
                 id="lock-menu"
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                }}
                 MenuListProps={{
                     'aria-labelledby': 'lock-button',
                     role: 'listbox',
+                    style: {  
+                        width: '12rem',  
+                      }, 
+                    dense: true,
                 }}
             >
                 {options.map((option, index) => (
@@ -72,6 +75,13 @@ export default function SimpleListMenu() {
                         {option}
                     </MenuItem>
                 ))}
+                <Divider />
+                <MenuItem onClick={(event) => handleNewCharacter()}>
+                    <ListItemIcon>
+                        <AddCircleOutlineIcon fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText>New Character</ListItemText>
+                </MenuItem>
             </Menu>
         </div>
     );

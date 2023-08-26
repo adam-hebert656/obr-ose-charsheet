@@ -2,7 +2,7 @@ import { createContext, useState, useMemo } from 'react';
 
 export const CharacterContext = createContext();
 export const CharacterProvider = (props) => {
-    const [characters, setcharacters] = useState([{ name: "Adak", class: "Dwarf", hp: 10 }, { name: "Ibrahik", class: "Fighter", hp: 10 },]);
+    const [characters, setcharacters] = useState([{ name: "Adak", class: "Dwarf", hp: 10, level: 1 }, { name: "Ibrahik", class: "Fighter", hp: 10, level: 1 },]);
     const [selectedCharacterIndex, _setselectedCharacterIndex] = useState(0);
     const [selectedCharacter, setselectedCharacter] = useState(characters[0])
 
